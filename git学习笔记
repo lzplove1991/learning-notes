@@ -39,3 +39,16 @@ git是分布式版本控制系统，跟踪管理的是修改，而非文件
 7.分支冲突 （1）手动解决 （2）解决冲突后查看分支合并图：git log --graph (--pretty=oneline)
 8.分支管理策略、Bug分支、Feature分支、多人协作（实际开发中用)参照Git教程-廖雪峰的官方网站
 
+git冲突的解决（eclipse）：
+   进入同步视图：  右键--team--synchronized--。。。
+解决方案：
+    add to index   添加到本地暂存区
+    commit   提交到本地分支
+    pull   更新到服务端的分支内容到本地分支
+    修改冲突 可以直接修改 或者选择merge tool
+    -->此时已经变为了普通文件
+    直接commit and push
+    
+    
+
+
