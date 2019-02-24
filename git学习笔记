@@ -1,5 +1,6 @@
 git是分布式版本控制系统，跟踪管理的是修改，而非文件
 
+
 基本操作
 1.安装git: sudo apt-get install git
 安装后设置： git config --global user.name "Your Name"
