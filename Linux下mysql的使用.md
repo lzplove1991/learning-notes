@@ -78,5 +78,9 @@ where之后 exist返回的值是0和1
 确定条件是否满足：exists（select * from my_class）
 -> select * from my_student where exists(select * from my_class)
 
+视图：view
+是一种有结构（有行有列）没结果（结果中不真实存放数据）的虚拟表
+虚拟表的结构来源不是自己定义，而是从对应的基表中产生
+
 
 设置用户可以在本地访问mysql：grant all privileges on *.* to username@localhost identified by "password" ;
