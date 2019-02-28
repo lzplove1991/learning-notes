@@ -1,0 +1,48 @@
+http协议是Hyper Text Transfer Protocol（超文本传输协议）的缩写，他是基于TCP/IP协议传输数据
+
+1.Http request
+  ·一个请求行（method+path+http version）
+  ·请求头部（多个）
+  ·请求正文
+method：
+  Get请求：从服务器获取信息，
+  Post请求：传输数据到服务器，网站登陆，表单验证
+path：
+  服务器根据path决定该给用户返回什么样的html界面
+
+请求头部：客户端要提供给服务器的信息，头部可以有任意多个，使用空白行表示请求头部结束
+请求正文：头部结束以后的部分，
+
+
+2.Http response：
+  ·相应状态行（http version+status code+reason）
+  ·相应头部
+  ·响应正文
+  
+Wireshark抓包工具可以观察http协议网卡上的数据帧
+
+Scrapy工作原理
+1.爬虫程序的基本执行流程
+  1.下载页面
+  2.抓取页面中的数据
+  3.提取页面中的链接
+
+创建爬虫项目：
+scrapy startproject first_example
+
+调试爬虫：
+scrapy shell
+fetch("http://books.toscrape.com") 
+view(response)
+sel=response.css("article.product_pod")   
+sel.xpath('./h3/a/@title').extract()  提取书名
+
+sel.css(p.price_color::text).extract()
+
+#提取页面中的链接
+response.join(url) 将获取到的相对链接构建成新的url
+
+scrapy genspider books books.toscrape.com
+
+运行爬虫：
+scrapy  crawl books -o books.csv
