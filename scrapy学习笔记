@@ -46,3 +46,100 @@ scrapy genspider books books.toscrape.com
 
 运行爬虫：
 scrapy  crawl books -o books.csv
+
+Scrapy构造器方法：
+Request构造器函数签名：
+Request(url，callback，method=‘GET’，headers，body，cookies，meta，encoding=‘utf-8’，property=O，dont_filter=False，errback)
+url（必选）：请求页面的url地址，bytes或str类型
+callback：页面解析函数，callable类型，Request对象请求的页面下载完成后，由该参数指定的页面解析函数被调用，如果未传递该参数，默认调用Spider的parse方法
+method：http请求的方法，默认为GET
+headers：http请求的头部字典，dict类型，如果其中的某项的值为None，则表示不发送该项的http头部
+body：请求的正文，hytes或str类型
+cookies：cookie信息字典，dict类型
+meta：Request的元数据字典，dict类型，用于给框架中其它组建传递信息，比如中间件Item Pipeline。其它组建可以使用Request对象的meta属性访问该元数据字典
+（request.meta）也用于给响应处理函数传递信息
+encoding：url和body参数的编码，默认为utf-8，如果传入的url或body参数是str类型，则使用该参数进行编码
+priority：请求的优先级，默认为0，优先级高的请求优先下载
+dont_filter：默认false，对同一个url地址多次提交下载请求，后面的请求会被去重过滤器过滤（避免重复下载），如果将该参数置为True，可以使请求避免被过滤，强制下载
+例如，在多次抓取一个内容随时间变化而变化的页面时（每次使用相同url），可以将该参数置为True
+errback：请求出现异常或者出现http错误时（如 404页面不存在）的回调函数
+
+Rsponse对象
+response对象用来描述一个http响应，Response只是一个基类，根据响应内容的不同，有如下子类：
+TestResponse
+HtmlResponse
+XmlResponse
+
+fetch(req) :可以在shell中发送信息
+
+页面数据提取：
+使用Selector提取数据：
+Selector对象：在scrapy中使用Selector对象提取页面中的数据，使用时先通过Xpath或Css选择器选中页面中要提取的数据，然后进行提取
+创建Selector：from scrapy.selector import Selector
+selector=Selector(text=html)#创建Selector对象
+
+提取数据：
+调用Selector或SelectorList对象的extrac，re，extract_first（只在第一个selector对象使用extract），re_first方法提取数据
+
+Selector与Response：
+在实际开发中，几乎不需要手动创建Selector对象，在第一次访问一个Response对象的selector属性时，Response对象内部会自动创建Selector对象，并将该Selector
+对象缓存，以便下次使用。我们可以通过response.selector访问Selector对象。
+
+XPath语法：
+XPath即xml路径语言（XML path language），它是一种用来确定xml文档中某部分位置的语言。xml文档（html属于xml）是由一系列节点构成的树
+节点类型：
+  根结点：整个文档的根
+  元素节点：html,body,div,p,a
+  属性节点：href
+  文本节点：文本
+  
+ 节点间的关系：
+  父子：
+  兄弟：
+  祖先/后裔：
+  
+  XPath常用基本语法：
+  /：选中文档的根节点
+  .：选中当前节点
+  ..：选中当前节点的父节点
+  ELEMENT：选中子节点中所有的ELEMENT节点
+  //ELEMENT：选中后代节点中所有的ELEMENT节点
+  *：选中所有元素节点
+  text（）：选中所有文本子节点
+  @ATTR：选中名为ATTR的属性节点
+  @*：选中所有属性节点
+  [谓语]：谓语用来查找某个特定的节点或者包含某个特定值的节点
+  
+  CSS选择器：
+  用来确定html文档中某部分位置的语言
+  CSS选择器的语法比XPath更简单一些，但功能不如XPath强大。实际上，当我们调用Selector对象的CSS方法时，在其内部会使用python库cssselect将CSS选择器表达式翻译成
+  Xpath表达式，然后再调用Selector对象的XPath方法
+  
+  CSS常用语法：
+  #ID：选中id属性为ID的元素
+  .CLASS：选中class属性中包含CLASS的元素
+  E：：attr（ATTR）：选中E元素的ATTR属性节点
+ 
+ 使用Item封装数据：
+ 使用字典
+ 使用Item：
+  Scrapy中提供了Item基类（自定义数据类的基类）和Field类（用来描述自定义数据类包含哪些字段）可以使它们自定义数据类，封装爬取到的信息
+  
+ Field元数据：一项数据由Spider提交给Scrapy引擎之后，可能会被传递给其它组件处理，此时可以用field元数据
+ 
+ 使用Item Pipeline处理数据：
+ 在Scrapy中 Item Pipeline是处理数据的组件，一个Item Pipeline即是一个包含特定接口的类，通常只负责一种功能的数据处理。在一个项目中可以同时启动多个Item
+ Pipelie，它们按指定次序级联起来，形成一条数据处理流水线
+  1.数据清洗
+  2.验证数据的有效性
+  3.过滤掉重复的数据
+  4.将数据存入数据库
+ 
+启用Item Pipeline：
+可选组件，需要在settings中设置
+
+提取链接：
+1.使用Selector，在提取链接较少的时候使用
+2.使用LinkExtractor：
+  scrapy提供了一个专门用于提取链接的类LinkExtractor，在提取大量链接或提取规则比较复杂时，使用LinkExtractor更加方便
+
