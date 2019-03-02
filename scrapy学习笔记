@@ -143,3 +143,10 @@ XPath即xml路径语言（XML path language），它是一种用来确定xml文�
 2.使用LinkExtractor：
   scrapy提供了一个专门用于提取链接的类LinkExtractor，在提取大量链接或提取规则比较复杂时，使用LinkExtractor更加方便
 
+scrapy genspider top200 yuedu.baidu.com 初始化
+
+下载图片和文件：
+FilesPipeline
+ImagesPipeline
+
+流程：
